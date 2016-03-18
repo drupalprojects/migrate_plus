@@ -8,6 +8,7 @@ third_party_settings:
     migration_group: beer
 source:
   plugin: beer_user
+  key: default
 destination:
   plugin: entity:user
 process:

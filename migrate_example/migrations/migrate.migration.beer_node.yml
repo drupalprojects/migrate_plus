@@ -6,6 +6,7 @@ third_party_settings:
     migration_group: beer
 source:
   plugin: beer_node
+  key: default
 destination:
   plugin: entity:node
 process:

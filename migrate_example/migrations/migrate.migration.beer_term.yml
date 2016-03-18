@@ -26,6 +26,7 @@ third_party_settings:
 # src/Plugin/migrate/source/BeerTerm.php.
 source:
   plugin: beer_term
+  key: default
 
 # Every migration must also have a destination plugin, which handles writing
 # the migrated data in the appropriate form for that particular kind of data.

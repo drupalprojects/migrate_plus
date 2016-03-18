@@ -13,9 +13,18 @@ use Drupal\migrate_plus\Event\MigrateEvents;
 use Drupal\migrate_plus\Event\MigratePrepareRowEvent;
 
 /**
+ * Implements hook_migration_plugins_alter().
+ */
+function migrate_tools_migration_plugins_alter(array &$migrations) {
+  // @todo: Implement group merging here.
+}
+
+/**
  * Implements hook_ENTITY_TYPE_load().
  */
 function migrate_plus_migration_load($migrations) {
+  // @todo: Replace with hook_migration_plugins()
+  return;
   /** @var MigrationInterface $migration */
   foreach ($migrations as $migration) {
     // If we are pointing to a valid group, merge its properties into ours.
