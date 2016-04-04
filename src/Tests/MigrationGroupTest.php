@@ -34,7 +34,8 @@ class MigrationGroupTest extends WebTestBase {
     $group_id = 'test_group';
 
     /** @var MigrationGroupInterface $migration_group */
-    $migration_group = entity_create('migration_group', array());
+    $migration_group = $this->container->get('entity_type.manager')
+      ->getStorage('migration_group')->create([])->save();
     $migration_group->set('id', $group_id);
     $migration_group->set('shared_configuration', array(
       'migration_tags' => array('Drupal 6'), // In migration, so will be overridden.
@@ -49,7 +50,8 @@ class MigrationGroupTest extends WebTestBase {
     $migration_group->save();
 
     /** @var MigrationInterface $migration */
-    $migration = entity_create('migration', array(
+    $migration = $this->container->get('entity_type.manager')
+      ->getStorage('migration_group')->create(array(
       'id' => 'specific_migration',
       'load' => [],
       'third_party_settings' => [
@@ -102,12 +104,14 @@ class MigrationGroupTest extends WebTestBase {
    */
   public function testDelete() {
     /** @var MigrationGroupInterface $migration_group */
-    $migration_group = entity_create('migration_group', array());
+    $migration_group = $this->container->get('entity_type.manager')
+      ->getStorage('migration_group')->create(array());
     $migration_group->set('id', 'test_group');
     $migration_group->save();
 
     /** @var MigrationInterface $migration */
-    $migration = entity_create('migration', [
+    $migration = $this->container->get('entity_type.manager')
+      ->getStorage('migration')->create([
       'id' => 'specific_migration',
       'third_party_settings' => [
         'migrate_plus' => [
