@@ -13,6 +13,9 @@ migrate_plus.migration.*:
       sequence:
         type: string
         label: 'Tag'
+    migration_group:
+      type: string
+      label: 'Group'
     label:
       type: label
       label: 'Label'
@@ -67,10 +70,3 @@ migrate_plus.migration_group.*:
     shared_configuration:
       type: ignore
       label: 'Shared migration configuration'
-migrate_plus.migration.*.third_party.migrate_plus:
-  type: mapping
-  label: 'Group'
-  mapping:
-    migration_group:
-      type: string
-      label: 'Group'

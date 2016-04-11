@@ -3,12 +3,9 @@
 # repeat that here.
 id: beer_user
 label: Beer Drinkers of the world
-third_party_settings:
-  migrate_plus:
-    migration_group: beer
+migration_group: beer
 source:
   plugin: beer_user
-  key: default
 destination:
   plugin: entity:user
 process:
