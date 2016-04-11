@@ -82,3 +82,6 @@ process:
     # with the Drupal term ID of the referenced style (or NULL if style_parent
     # was empty).
     source: style_parent
+
+# We'll learn more about dependencies in beer_node - here, we leave them empty.
+migration_dependencies: {}
