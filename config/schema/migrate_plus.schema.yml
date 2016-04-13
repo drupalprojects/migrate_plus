@@ -28,9 +28,6 @@ migrate_plus.migration.*:
     destination:
       type: migrate_plus.destination.[plugin]
       label: 'Destination'
-    template:
-      type: string
-      label: 'Template'
     migration_dependencies:
       type: mapping
       label: 'Dependencies'

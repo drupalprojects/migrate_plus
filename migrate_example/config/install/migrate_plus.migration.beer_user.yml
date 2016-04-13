@@ -71,6 +71,10 @@ process:
     map:
       0: Male
       1: Female
+    # If the input is missing, leave the field empty. Without this, an empty
+    # or invalid source value would cause the user record to be skipped
+    # entirely.
+    bypass: true
 
   field_migrate_example_favbeers: beers
   # The following is blocked on https://www.drupal.org/node/2590993.
