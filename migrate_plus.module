@@ -21,7 +21,7 @@ function migrate_plus_migration_load($migrations) {
     // If we are pointing to a valid group, merge its properties into ours.
     $migration_group = $migration->getThirdPartySetting('migrate_plus', 'migration_group');
     if (empty($migration_group)) {
-      continue;
+      $migration_group = 'default';
     }
     $group = MigrationGroup::load($migration_group);
     if (empty($group)) {
