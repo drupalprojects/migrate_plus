@@ -19,7 +19,7 @@ function migrate_tools_migration_plugins_alter(array &$migrations) {
   /** @var \Drupal\migrate\Plugin\MigrationInterface $migration */
   foreach ($migrations as $id => $migration) {
     if (empty($migration['migration_group'])) {
-      continue;
+      $migration['migration_group'] = 'default';
     }
     $group = MigrationGroup::load($migration['migration_group']);
     if (empty($group)) {
