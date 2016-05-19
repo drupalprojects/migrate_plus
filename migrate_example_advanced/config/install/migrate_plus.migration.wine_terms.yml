@@ -30,3 +30,4 @@ process:
     migration: wine_terms
     source: category_parent
   weight: ordering
+migration_dependencies: {}

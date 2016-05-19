@@ -44,3 +44,4 @@ process:
   label: friendly_name
 destination:
   plugin: entity:user_role
+migration_dependencies: {}
