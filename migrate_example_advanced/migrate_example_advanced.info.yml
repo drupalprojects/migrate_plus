@@ -1,7 +1,7 @@
 type: module
 name: Migrate Example (Advanced)
 description: 'Specialized examples of Drupal 8 migration.'
-package: Migration
+package: Examples
 core: 8.x
 dependencies:
   - migrate
