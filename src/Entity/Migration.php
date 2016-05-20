@@ -7,7 +7,9 @@
 
 namespace Drupal\migrate_plus\Entity;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Defines the Migration entity.
@@ -40,5 +42,21 @@ class Migration extends ConfigEntityBase implements MigrationInterface {
    * @var string
    */
   protected $label;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function invalidateTagsOnSave($update) {
+    parent::invalidateTagsOnSave($update);
+    Cache::invalidateTags(['migration_plugins']);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static function invalidateTagsOnDelete(EntityTypeInterface $entity_type, array $entities) {
+    parent::invalidateTagsOnDelete($entity_type, $entities);
+    Cache::invalidateTags(['migration_plugins']);
+  }
 
 }
