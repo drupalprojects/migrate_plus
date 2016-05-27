@@ -225,7 +225,13 @@ class Xml extends DataParserPluginBase implements ContainerFactoryPluginInterfac
     if ($target_element) {
       foreach ($this->fieldSelectors() as $field_name => $xpath) {
         foreach ($target_element->xpath($xpath) as $value) {
-          $this->currentItem[$field_name] = (string) $value;
+          $this->currentItem[$field_name][] = (string) $value;
+        }
+      }
+      // Reduce single-value results to scalars.
+      foreach ($this->currentItem as $field_name => $values) {
+        if (count($values) == 1) {
+          $this->currentItem[$field_name] = reset($values);
         }
       }
     }
