@@ -222,7 +222,7 @@ class Xml extends DataParserPluginBase implements ContainerFactoryPluginInterfac
 
     // If we've found the desired element, populate the currentItem and
     // currentId with its data.
-    if ($target_element) {
+    if ($target_element !== FALSE && !is_null($target_element)) {
       foreach ($this->fieldSelectors() as $field_name => $xpath) {
         foreach ($target_element->xpath($xpath) as $value) {
           $this->currentItem[$field_name][] = (string) $value;
