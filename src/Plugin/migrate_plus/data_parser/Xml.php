@@ -114,7 +114,11 @@ class Xml extends DataParserPluginBase implements ContainerFactoryPluginInterfac
     }
 
     foreach ($this->fieldSelectors() as $field_name => $xpath) {
-      if (substr($xpath, 0, 3) === '..\\') {
+      $prefix = substr($xpath, 0, 3);
+      if ($prefix === '../') {
+        $this->parentElementsOfInterest[] = str_replace('../', '', $xpath);
+      }
+      elseif ($prefix === '..\\') {
         $this->parentElementsOfInterest[] = str_replace('..\\', '', $xpath);
       }
     }
