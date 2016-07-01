@@ -31,3 +31,7 @@ process:
     source: category_parent
   weight: ordering
 migration_dependencies: {}
+dependencies:
+  enforced:
+    module:
+      - migrate_example_advanced

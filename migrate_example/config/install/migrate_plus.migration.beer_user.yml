@@ -98,3 +98,11 @@ process:
 #    migration: beer_node
 
 migration_dependencies: {}
+
+# When a module is creating a custom content type it needs to add an 
+# enforced dependency to itself, otherwise the content type will persist
+# after the module is disabled. See: https://www.drupal.org/node/2629516.
+dependencies:
+  enforced:
+    module:
+      - migrate_example

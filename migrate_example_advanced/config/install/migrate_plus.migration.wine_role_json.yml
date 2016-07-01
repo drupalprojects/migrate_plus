@@ -41,3 +41,7 @@ process:
 destination:
   plugin: entity:user_role
 migration_dependencies: {}
+dependencies:
+  enforced:
+    module:
+      - migrate_example_advanced

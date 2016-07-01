@@ -63,3 +63,7 @@ destination:
 migration_dependencies:
   required:
     - wine_terms
+dependencies:
+  enforced:
+    module:
+      - migrate_example_advanced
