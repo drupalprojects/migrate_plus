@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\migrate_plus\Plugin\migrate\source\Url.
- */
-
 namespace Drupal\migrate_plus\Plugin\migrate\source;
 
 use Drupal\migrate\Plugin\MigrationInterface;

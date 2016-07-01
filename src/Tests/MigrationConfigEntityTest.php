@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\migrate_plus\Tests\MigrationConfigEntityTest.
- */
-
 namespace Drupal\migrate_plus\Tests;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\migrate_plus\Entity\Migration.
- */
-
 namespace Drupal\migrate_plus\Entity;
 
 use Drupal\Core\Cache\Cache;
