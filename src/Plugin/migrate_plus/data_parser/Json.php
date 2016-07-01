@@ -48,12 +48,13 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
     // expected depth, pull that array out as a distinct item.
     $identifierDepth = $this->itemSelector;
     $items = [];
+    $iterator->rewind();
     while ($iterator->valid()) {
-      $iterator->next();
       $item = $iterator->current();
       if (is_array($item) && $iterator->getDepth() == $identifierDepth) {
         $items[] = $item;
       }
+      $iterator->next();
     }
     return $items;
   }
