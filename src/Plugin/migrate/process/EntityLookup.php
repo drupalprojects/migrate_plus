@@ -150,27 +150,37 @@ class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginIn
       if (!empty($this->migration->getProcess()[$this->destinationBundleKey][0]['default_value'])) {
         $destinationEntityBundle = $this->migration->getProcess()[$this->destinationBundleKey][0]['default_value'];
         $fieldConfig = $this->entityManager->getFieldDefinitions($this->destinationEntityType, $destinationEntityBundle)[$destinationProperty]->getConfig($destinationEntityBundle);
-        if ($fieldConfig->getType() != 'entity_reference') {
-          throw new MigrateException('The entity_lookup plugin found no entity reference field.');
-        }
+        switch ($fieldConfig->getType()) {
+          case 'entity_reference':
+            if (empty($this->lookupBundle)) {
+              $handlerSettings = $fieldConfig->getSetting('handler_settings');
+              $bundles = array_filter((array) $handlerSettings['target_bundles']);
+              if (count($bundles) == 1) {
+                $this->lookupBundle = reset($bundles);
+              }
+              // This was added in 8.1.x is not supported in 8.0.x.
+              elseif (!empty($handlerSettings['auto_create']) && !empty($handlerSettings['auto_create_bundle'])) {
+                $this->lookupBundle = reset($handlerSettings['auto_create_bundle']);
+              }
+            }
 
-        if (empty($this->lookupBundle)) {
-          $handlerSettings = $fieldConfig->getSetting('handler_settings');
-          $bundles = array_filter((array) $handlerSettings['target_bundles']);
-          if (count($bundles) == 1) {
-            $this->lookupBundle = reset($bundles);
-          }
-          // This was added in 8.1.x is not supported in 8.0.x.
-          elseif (!empty($handlerSettings['auto_create']) && !empty($handlerSettings['auto_create_bundle'])) {
-            $this->lookupBundle = reset($handlerSettings['auto_create_bundle']);
-          }
-        }
+            // Make an assumption that if the selection handler can target more than
+            // one type of entity that we will use the first entity type.
+            $this->lookupEntityType = $this->lookupEntityType ?: reset($this->selectionPluginManager->createInstance($fieldConfig->getSetting('handler'))->getPluginDefinition()['entity_types']);
+            $this->lookupValueKey = $this->lookupValueKey ?: $this->entityManager->getDefinition($this->lookupEntityType)->getKey('label');
+            $this->lookupBundleKey = $this->lookupBundleKey ?: $this->entityManager->getDefinition($this->lookupEntityType)->getKey('bundle');
+            break;
 
-        // Make an assumption that if the selection handler can target more than
-        // one type of entity that we will use the first entity type.
-        $this->lookupEntityType = $this->lookupEntityType ?: reset($this->selectionPluginManager->createInstance($fieldConfig->getSetting('handler'))->getPluginDefinition()['entity_types']);
-        $this->lookupValueKey = $this->lookupValueKey ?: $this->entityManager->getDefinition($this->lookupEntityType)->getKey('label');
-        $this->lookupBundleKey = $this->lookupBundleKey ?: $this->entityManager->getDefinition($this->lookupEntityType)->getKey('bundle');
+          case 'file':
+          case 'image':
+            $this->lookupEntityType = 'file';
+            $this->lookupValueKey = $this->lookupValueKey ?: 'uri';
+            break;
+
+          default:
+            throw new MigrateException('Destination field type ' .
+              $fieldConfig->getType(). 'is not a recognized reference type.');
+        }
       }
     }
 
