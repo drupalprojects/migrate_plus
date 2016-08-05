@@ -11,13 +11,14 @@ source:
   # we can't hardcode your local URL, we provide a relative path here which
   # hook_install() will rewrite to a full URL for the current site.
   urls: /migrate_example_advanced_position?_format=json
-  item_selector: 1
+  # An xpath-like selector corresponding to the items to be imported.
+  item_selector: position
   # Under 'fields', we list the data items to be imported. The first level keys
   # are the source field names we want to populate (the names to be used as
   # sources in the process configuration below). For each field we're importing,
   # we provide a label (optional - this is for display in migration tools) and
   # an xpath for retrieving that value. It's important to note that this xpath
-  # is relative to the elements retrieved by item_xpath.
+  # is relative to the elements retrieved by item_selector.
   fields:
     -
       name: machine_name
