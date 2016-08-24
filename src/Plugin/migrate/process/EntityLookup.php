@@ -117,7 +117,9 @@ class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrateExecutable, Row $row, $destinationProperty) {
-    $this->determineLookupProperties($destinationProperty);
+    // In case of subfields ('field_reference/target_id'), extract the field
+    // name only.
+    $destinationProperty = reset(explode('/', $destinationProperty));    $this->determineLookupProperties($destinationProperty);
 
     $this->destinationProperty = isset($this->configuration['destination_field']) ? $this->configuration['destination_field'] : NULL;
 
