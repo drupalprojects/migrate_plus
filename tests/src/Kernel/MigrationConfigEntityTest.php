@@ -1,8 +1,7 @@
 <?php
 
-namespace Drupal\migrate_plus\Tests;
+namespace Drupal\Tests\migrate_plus;
 
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate_plus\Entity\Migration;
 use Drupal\migrate_plus\Plugin\MigrationConfigEntityPluginManager;
