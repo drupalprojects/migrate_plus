@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\migrate_plus\Plugin\migrate\process\EntityGenerate.
- */
-
 namespace Drupal\migrate_plus\Plugin\migrate\process;
 
 use Drupal\Core\Entity\EntityManagerInterface;
