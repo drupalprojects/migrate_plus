@@ -3,9 +3,7 @@
 namespace Drupal\migrate_plus\Plugin\migrate_plus\data_parser;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\migrate\MigrateException;
 use Drupal\migrate_plus\DataParserPluginBase;
-use GuzzleHttp\Exception\RequestException;
 
 /**
  * Obtain JSON data for migration.
