@@ -6,8 +6,8 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StreamWrapper\LocalStream;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
+use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -76,7 +76,7 @@ class FileCopy extends ProcessPluginBase implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    // If we're stubbing a file entity, return a uri of NULL so it will get
+    // If we're stubbing a file entity, return a URI of NULL so it will get
     // stubbed by the general process.
     if ($row->isStub()) {
       return NULL;
@@ -85,7 +85,7 @@ class FileCopy extends ProcessPluginBase implements ContainerFactoryPluginInterf
 
     // Ensure the source file exists, if it's a local URI or path.
     if ($this->isLocalUri($source) && !file_exists($source)) {
-      throw new MigrateSkipProcessException("File '$source' does not exist.");
+      throw new MigrateException("File '$source' does not exist");
     }
 
     // If the start and end file is exactly the same, there is nothing to do.
@@ -94,19 +94,23 @@ class FileCopy extends ProcessPluginBase implements ContainerFactoryPluginInterf
     }
 
     $replace = $this->getOverwriteMode();
-    // We attempt the copy first to avoid calling file_prepare_directory() any
-    // more than absolutely necessary.
-    if ($this->writeFile($source, $destination, $replace)) {
-      return $destination;
+    // We attempt the copy/move first to avoid calling file_prepare_directory()
+    // any more than absolutely necessary.
+    $final_destination = $this->writeFile($source, $destination, $replace);
+    if ($final_destination) {
+      return $final_destination;
     }
+    // If writeFile didn't work, make sure there's a writable directory in
+    // place.
     $dir = $this->getDirectory($destination);
-    if (!file_prepare_directory($dir, FILE_CREATE_DIRECTORY)) {
-      throw new MigrateSkipProcessException("Could not create directory '$dir'");
+    if (!file_prepare_directory($dir, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+      throw new MigrateException("Could not create or write to directory '$dir'");
     }
-    if ($this->writeFile($source, $destination, $replace)) {
-      return $destination;
+    $final_destination = $this->writeFile($source, $destination, $replace);
+    if ($final_destination) {
+      return $final_destination;
     }
-    throw new MigrateSkipProcessException("File $source could not be copied to $destination.");
+    throw new MigrateException("File $source could not be copied to $destination");
   }
 
   /**
@@ -119,15 +123,19 @@ class FileCopy extends ProcessPluginBase implements ContainerFactoryPluginInterf
    * @param int $replace
    *   (optional) FILE_EXISTS_REPLACE (default) or FILE_EXISTS_RENAME.
    *
-   * @return bool
-   *   TRUE on success, FALSE on failure.
+   * @return string|bool
+   *   File destination on success, FALSE on failure.
    */
   protected function writeFile($source, $destination, $replace = FILE_EXISTS_REPLACE) {
     if ($this->configuration['move']) {
-      return (boolean) file_unmanaged_move($source, $destination, $replace);
+      return file_unmanaged_move($source, $destination, $replace);
     }
-    $destination = file_destination($destination, $replace);
-    return @copy($source, $destination);
+    // We can't use file_unmanaged_copy because it will break with remote Urls.
+    $final_destination = file_destination($destination, $replace);
+    if (@copy($source, $final_destination)) {
+      return $final_destination;
+    }
+    return FALSE;
   }
 
   /**
