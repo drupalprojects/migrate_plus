@@ -4,5 +4,4 @@ description: 'Enhancements to core migration support'
 package: Migration
 core: 8.x
 dependencies:
-  - system (>=8.1)
-  - migrate
+  - drupal:migrate (>=8.1)
