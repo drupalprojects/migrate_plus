@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\migrate_plus;
+namespace Drupal\Tests\migrate_plus\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate_plus\Entity\Migration;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\migrate_plus;
+namespace Drupal\Tests\migrate_plus\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate_plus\Entity\Migration;
@@ -49,6 +49,7 @@ class MigrationGroupTest extends KernelTestBase {
       'migration_tags' => ['Drupal 7'], // Overrides group.
       'destination' => [],
       'source' => [],
+      'process' => [],
       'migration_dependencies' => [],
     ]);
     $migration->set('source', [
