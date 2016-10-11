@@ -7,6 +7,13 @@ source:
   plugin: url
   data_fetcher_plugin: http
   data_parser_plugin: json
+  # The data_parser normally limits the fields passed on to the source plugin
+  # to fields configured to be used as part of the migration. To support more
+  # dynamic migrations, the JSON data parser supports including the original
+  # data for the current row. Simply include the 'include_raw_data' flag set
+  # to `true` to enable this. This option is disabled by default to minimize
+  # memory footprint for migrations that do not need this capability.
+  # include_raw_data: true
   # Normally, this is one or more fully-qualified URLs or file paths. Because
   # we can't hardcode your local URL, we provide a relative path here which
   # hook_install() will rewrite to a full URL for the current site.

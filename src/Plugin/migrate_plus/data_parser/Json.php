@@ -116,6 +116,9 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
         }
         $this->currentItem[$field_name] = $field_data;
       }
+      if (!empty($this->configuration['include_raw_data'])) {
+        $this->currentItem['raw'] = $current;
+      }
       $this->iterator->next();
     }
   }
