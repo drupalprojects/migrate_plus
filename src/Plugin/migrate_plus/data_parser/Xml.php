@@ -239,7 +239,15 @@ class Xml extends DataParserPluginBase {
           $values = $target_element->xpath($xpath);
         }
         foreach ($values as $value) {
-          $this->currentItem[$field_name][] = (string) $value;
+          // If the SimpleXMLElement doesn't render to a string of any sort,
+          // and has children then return the whole object for the process
+          // plugin or other row manipulation.
+          if ($value->children() && !trim((string) $value)) {
+            $this->currentItem[$field_name] = $value;
+          }
+          else {
+            $this->currentItem[$field_name][] = (string) $value;
+          }
         }
       }
       // Reduce single-value results to scalars.
