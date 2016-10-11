@@ -189,13 +189,13 @@ class Xml extends DataParserPluginBase {
       if ($this->reader->nodeType == \XMLReader::ELEMENT) {
         if ($this->prefixedName) {
           $this->currentPath[$this->reader->depth] = $this->reader->name;
-          if (array_key_exists($this->reader->name, $this->parentElementsOfInterest)) {
+          if (in_array($this->reader->name, $this->parentElementsOfInterest)) {
             $this->parentXpathCache[$this->reader->depth][$this->reader->name][] = $this->getSimpleXml();
           }
         }
         else {
           $this->currentPath[$this->reader->depth] = $this->reader->localName;
-          if (array_key_exists($this->reader->localName, $this->parentElementsOfInterest)) {
+          if (in_array($this->reader->localName, $this->parentElementsOfInterest)) {
             $this->parentXpathCache[$this->reader->depth][$this->reader->name][] = $this->getSimpleXml();
           }
         }
@@ -229,7 +229,16 @@ class Xml extends DataParserPluginBase {
     // currentId with its data.
     if ($target_element !== FALSE && !is_null($target_element)) {
       foreach ($this->fieldSelectors() as $field_name => $xpath) {
-        foreach ($target_element->xpath($xpath) as $value) {
+        $prefix = substr($xpath, 0, 3);
+        if (in_array($prefix, ['../', '..\\'])) {
+          $name = str_replace($prefix, '', $xpath);
+          $up = substr_count($xpath, $prefix);
+          $values = $this->getAncestorElements($up, $name);
+        }
+        else {
+          $values = $target_element->xpath($xpath);
+        }
+        foreach ($values as $value) {
           $this->currentItem[$field_name][] = (string) $value;
         }
       }
