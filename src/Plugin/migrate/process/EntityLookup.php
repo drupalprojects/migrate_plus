@@ -226,25 +226,24 @@ class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginIn
       return NULL;
     }
 
-    if ($multiple && !empty($this->destinationProperty)) {
-      array_walk($results, function (&$value) {
-        $value = [$this->destinationProperty => $value];
-      });
-
-      return array_values($results);
-    }
-
     // By default do a case-sensitive comparison.
     if (!$ignoreCase) {
       // Returns the entity's identifier.
-      foreach ($results as $identifier) {
-        if ($value === $this->entityManager->getStorage($this->lookupEntityType)->load($identifier)->{$this->lookupValueKey}->value) {
-          return $identifier;
+      foreach ($results as $k => $identifier) {
+        $result_value = $this->entityManager->getStorage($this->lookupEntityType)->load($identifier)->{$this->lookupValueKey}->value;
+        if (($multiple && !in_array($result_value, $value, TRUE)) || (!$multiple && $result_value !== $value)) {
+          unset($results[$k]);
         }
       }
     }
 
-    return reset($results);
+    if ($multiple && !empty($this->destinationProperty)) {
+      array_walk($results, function (&$value) {
+        $value = [$this->destinationProperty => $value];
+      });
+    }
+
+    return $multiple ? array_values($results) : reset($results);
   }
 
 }
