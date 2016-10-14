@@ -42,12 +42,8 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
    */
   protected function getSourceData($url) {
     $response = $this->getDataFetcherPlugin()->getResponseContent($url);
-
-    // json_decode() expects utf8 data so let's make sure it gets it.
-    $utf8response = utf8_encode($response);
-
     // Convert objects to associative arrays.
-    $source_data = json_decode($utf8response, TRUE);
+    $source_data = json_decode($response, TRUE);
     // Backwards-compatibility for depth selection.
     if (is_int($this->itemSelector)) {
       return $this->selectByDepth($source_data);
