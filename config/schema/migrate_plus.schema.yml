@@ -7,6 +7,9 @@ migrate_plus.migration.*:
     id:
       type: string
       label: 'ID'
+    class:
+      type: string
+      label: 'Class'
     migration_tags:
       type: sequence
       label: 'Migration Tags'
