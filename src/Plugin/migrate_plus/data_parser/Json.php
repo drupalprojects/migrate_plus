@@ -61,7 +61,9 @@ class Json extends DataParserPluginBase implements ContainerFactoryPluginInterfa
     // Otherwise, we're using xpath-like selectors.
     $selectors = explode('/', trim($this->itemSelector, '/'));
     foreach ($selectors as $selector) {
-      $source_data = $source_data[$selector];
+      if (!empty($selector)) {
+        $source_data = $source_data[$selector];
+      }
     }
     return $source_data;
   }
