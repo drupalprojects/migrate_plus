@@ -67,7 +67,12 @@ class SimpleXml extends DataParserPluginBase {
     if ($target_element !== FALSE && !is_null($target_element)) {
       foreach ($this->fieldSelectors() as $field_name => $xpath) {
         foreach ($target_element->xpath($xpath) as $value) {
-          $this->currentItem[$field_name][] = (string) $value;
+          if ($value->children() && !trim((string) $value)) {
+            $this->currentItem[$field_name] = $value;
+          }
+          else {
+            $this->currentItem[$field_name][] = (string) $value;
+          }
         }
       }
       // Reduce single-value results to scalars.
