@@ -7,3 +7,5 @@ dependencies:
   - drupal:migrate
   - migrate_plus:migrate_example_setup
   - migrate_plus:migrate_plus
+  - drupal:menu_ui
+  - drupal:path
