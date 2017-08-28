@@ -17,7 +17,9 @@
     "source": "https://cgit.drupalcode.org/migrate_plus"
   },
   "minimum-stability": "dev",
-  "require": {},
+  "require": {
+    "ext-soap": "*"
+  },
   "suggest": {
     "sainsburys/guzzle-oauth2-plugin": "3.0 required for the OAuth2 authentication plugin"
   }
