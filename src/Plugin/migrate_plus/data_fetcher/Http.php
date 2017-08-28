@@ -88,7 +88,7 @@ class Http extends DataFetcherPluginBase implements ContainerFactoryPluginInterf
       }
     }
     catch (RequestException $e) {
-      throw new MigrateException('Error message: ' . $e->getMessage() . ' at ' . $url .'.');
+      throw new MigrateException('Error message: ' . $e->getMessage() . ' at ' . $url . '.');
     }
     return $response;
   }

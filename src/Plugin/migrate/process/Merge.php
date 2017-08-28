@@ -56,7 +56,7 @@ class Merge extends ProcessPluginBase {
       throw new MigrateException('Input should be an array.');
     }
     $new_value = [];
-    foreach($value as $item) {
+    foreach ($value as $item) {
       if (!is_array($item)) {
         throw new MigrateException('One of the items is not an array that can be merged.');
       }
