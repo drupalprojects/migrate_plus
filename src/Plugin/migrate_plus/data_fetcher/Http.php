@@ -10,6 +10,19 @@ use GuzzleHttp\Exception\RequestException;
 /**
  * Retrieve data over an HTTP connection for migration.
  *
+ *  * Example:
+ *
+ * @code
+ * source:
+ *   plugin: url
+ *   data_fetcher_plugin: http
+ *   headers:
+ *     Accept: application/json
+ *     User-Agent: Internet Explorer 6
+ *     Authorization-Key: secret
+ *     Arbitrary-Header: foobarbaz
+ * @endcode
+ *
  * @DataFetcher(
  *   id = "http",
  *   title = @Translation("HTTP")
@@ -44,6 +57,8 @@ class Http extends DataFetcherPluginBase implements ContainerFactoryPluginInterf
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->httpClient = \Drupal::httpClient();
+
+    $this->setRequestHeaders($configuration['headers']);
   }
 
   /**
