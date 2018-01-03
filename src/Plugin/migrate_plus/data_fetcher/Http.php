@@ -58,6 +58,8 @@ class Http extends DataFetcherPluginBase implements ContainerFactoryPluginInterf
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->httpClient = \Drupal::httpClient();
 
+    // Ensure there is a 'headers' key in the configuration.
+    $configuration += ['headers' => []];
     $this->setRequestHeaders($configuration['headers']);
   }
 
