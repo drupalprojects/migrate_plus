@@ -20,5 +20,8 @@
   "suggest": {
     "sainsburys/guzzle-oauth2-plugin": "3.0 required for the OAuth2 authentication plugin",
     "ext-soap": "*"
+  },
+  "extra": {
+      "enable-patching": true
   }
 }
