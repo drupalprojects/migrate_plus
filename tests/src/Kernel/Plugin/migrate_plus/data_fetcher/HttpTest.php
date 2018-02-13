@@ -6,7 +6,7 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\migrate_plus\Plugin\migrate_plus\data_fetcher\Http;
 
 /**
- * Class HttpTest
+ * Class HttpTest.
  *
  * @group migrate_plus
  * @package Drupal\Tests\migrate_plus\Unit\migrate_plus\data_fetcher

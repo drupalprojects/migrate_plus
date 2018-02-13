@@ -10,7 +10,7 @@ use GuzzleHttp\Exception\RequestException;
 /**
  * Retrieve data over an HTTP connection for migration.
  *
- *  * Example:
+ * Example:
  *
  * @code
  * source:
@@ -31,7 +31,7 @@ use GuzzleHttp\Exception\RequestException;
 class Http extends DataFetcherPluginBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The HTTP Client
+   * The HTTP client.
    *
    * @var \GuzzleHttp\Client
    */

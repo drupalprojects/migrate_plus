@@ -5,7 +5,6 @@ namespace Drupal\Tests\migrate_plus\Unit\process;
 use Drupal\migrate_plus\Plugin\migrate\process\StrReplace;
 use Drupal\Tests\migrate\Unit\process\MigrateProcessTestCase;
 
-
 /**
  * Tests the str replace process plugin.
  *
