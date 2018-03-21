@@ -141,7 +141,12 @@ class EntityGenerateTest extends KernelTestBase implements MigrateMessageInterfa
         if (is_array($value)) {
           foreach ($value as $key => $expectedValue) {
             if (empty($expectedValue)) {
-              $this->assertEmpty($entity->{$property}->getValue(), "Expected value is empty but field $property is not empty.");
+              if (!$entity->{$property}->isEmpty()) {
+                $this->assertTrue($entity->{$property}[0]->entity->$key->isEmpty(), "Expected value is empty but field $property.$key is not empty.");
+              }
+              else {
+                $this->assertTrue($entity->{$property}->isEmpty(), "Expected value is empty but field $property is not empty.");
+              }
             }
             elseif ($entity->{$property}->getValue()) {
               $this->assertEquals($expectedValue, $entity->{$property}[0]->entity->$key->value);
@@ -303,6 +308,92 @@ class EntityGenerateTest extends KernelTestBase implements MigrateMessageInterfa
             $this->fieldName => [
               'tid' => 1,
               'name' => 'Grapes',
+            ],
+          ],
+        ],
+        'pre seed' => [
+          'taxonomy_term' => [
+            'name' => 'Grapes',
+            'vid' => $this->vocabulary,
+            'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+          ],
+        ],
+      ],
+      'provide values' => [
+        'definition' => [
+          'source' => [
+            'plugin' => 'embedded_data',
+            'data_rows' => [
+              [
+                'id' => 1,
+                'title' => 'content item 1',
+                'term' => 'Apples',
+              ],
+              [
+                'id' => 2,
+                'title' => 'content item 2',
+                'term' => 'Bananas',
+              ],
+              [
+                'id' => 3,
+                'title' => 'content item 3',
+                'term' => 'Grapes',
+              ],
+            ],
+            'ids' => [
+              'id' => ['type' => 'integer'],
+            ],
+          ],
+          'process' => [
+            'id' => 'id',
+            'type' => [
+              'plugin' => 'default_value',
+              'default_value' => $this->bundle,
+            ],
+            'title' => 'title',
+            'term_upper' => [
+              'plugin' => 'callback',
+              'source' => 'term',
+              'callable' => 'strtoupper',
+            ],
+            $this->fieldName => [
+              'plugin' => 'entity_generate',
+              'source' => 'term',
+              'values' => [
+                'description' => '@term_upper',
+              ],
+            ],
+          ],
+          'destination' => [
+            'plugin' => 'entity:node',
+          ],
+        ],
+        'expected' => [
+          'row 1' => [
+            'id' => 1,
+            'title' => 'content item 1',
+            $this->fieldName => [
+              'tid' => 2,
+              'name' => 'Apples',
+              'description' => 'APPLES',
+            ],
+          ],
+          'row 2' => [
+            'id' => 2,
+            'title' => 'content item 2',
+            $this->fieldName => [
+              'tid' => 3,
+              'name' => 'Bananas',
+              'description' => 'BANANAS',
+            ],
+          ],
+          'row 3' => [
+            'id' => 3,
+            'title' => 'content item 3',
+            $this->fieldName => [
+              'tid' => 1,
+              'name' => 'Grapes',
+              'description' => NULL,
             ],
           ],
         ],
