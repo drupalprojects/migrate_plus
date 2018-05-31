@@ -152,6 +152,11 @@ class EntityLookup extends ProcessPluginBase implements ContainerFactoryPluginIn
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrateExecutable, Row $row, $destinationProperty) {
+    // If the source data is an empty array, return the same.
+    if (gettype($value) === 'array' && count($value) === 0) {
+      return [];
+    }
+
     // In case of subfields ('field_reference/target_id'), extract the field
     // name only.
     $parts = explode('/', $destinationProperty);

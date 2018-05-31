@@ -20,7 +20,7 @@ use Drupal\migrate\Row;
  * - value: An single value or array of values against which the source value
  *   should be compared.
  * - not_equals: (optional) If set, skipping occurs when values are not equal.
- * - method: (optional) What to do if the input value is empty. Possible values:
+ * - method: What to do if the input value is empty. Possible values:
  *   - row: Skips the entire row when an empty value is encountered.
  *   - process: Prevents further processing of the input property when the value
  *     is empty.
@@ -32,6 +32,7 @@ use Drupal\migrate\Row;
  *   type:
  *     plugin: skip_on_value
  *     source: content_type
+ *     method: row
  *     value: blog
  * @endcode
  *
